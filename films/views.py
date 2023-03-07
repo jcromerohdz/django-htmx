@@ -43,7 +43,6 @@ def check_username(request):
         return HttpResponse("<div id='username-error' class='success'>This username is available</div>")
 
 
-
 def add_film(request):
     name = request.POST.get('filmname')
     
@@ -54,5 +53,14 @@ def add_film(request):
     request.user.films.add(film)
 
     # return template fragment with all the user's films
+    films = request.user.films.all()
+    return render(request, 'partials/film-list.html', {'films': films})
+
+
+def delete_film(request, pk):
+    # remove the film from the user's list
+    request.user.films.remove(pk)
+
+    # return the template fragment
     films = request.user.films.all()
     return render(request, 'partials/film-list.html', {'films': films})
